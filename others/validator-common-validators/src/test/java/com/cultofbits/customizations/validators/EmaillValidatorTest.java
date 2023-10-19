@@ -17,7 +17,7 @@ public class EmaillValidatorTest {
     public void pass_validation_if_email_is_valid() {
 
         Definition definition = DefinitionBuilder.aDefinition()
-                .fieldDefinitions(FieldDefinitionBuilder.aFieldDefinition().name("Email").description("$commonsValidator.email"))
+                .fieldDefinitions(FieldDefinitionBuilder.aFieldDefinition().name("Email").description("$commonValidators.email"))
                 .build();
 
         Instance instance = InstanceBuilder.anInstance(definition)
@@ -31,7 +31,7 @@ public class EmaillValidatorTest {
     public void pass_validation_if_email_is_null() {
 
         Definition definition = DefinitionBuilder.aDefinition()
-                .fieldDefinitions(FieldDefinitionBuilder.aFieldDefinition().name("Email").description("$commonsValidator.email"))
+                .fieldDefinitions(FieldDefinitionBuilder.aFieldDefinition().name("Email").description("$commonValidators.email"))
                 .build();
 
         Instance instance = InstanceBuilder.anInstance(definition)
@@ -44,7 +44,7 @@ public class EmaillValidatorTest {
     public void fail_validation_if_email_is_invalid() {
 
         Definition definition = DefinitionBuilder.aDefinition()
-                .fieldDefinitions(FieldDefinitionBuilder.aFieldDefinition().name("Email").description("$commonsValidator.email"))
+                .fieldDefinitions(FieldDefinitionBuilder.aFieldDefinition().name("Email").description("$commonValidators.email"))
                 .build();
 
         Instance instance = InstanceBuilder.anInstance(definition)

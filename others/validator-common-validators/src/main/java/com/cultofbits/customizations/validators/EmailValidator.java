@@ -20,7 +20,7 @@ import static com.cultofbits.recordm.customvalidators.api.ValidationError.custom
  */
 public class EmailValidator implements OnCreateValidator, OnUpdateValidator {
 
-    public static final String KEYWORD = "$commonsValidator.email";
+    public static final String KEYWORD = "$commonValidators.email";
 
     @Override
     public void setInstanceRepository(InstanceRepository instanceRepository) {
@@ -42,7 +42,7 @@ public class EmailValidator implements OnCreateValidator, OnUpdateValidator {
 
         for (InstanceField instanceField : instanceFields) {
             if ((!instanceField.isVisible() || instanceField.getValue() == null)
-                    && instanceField.children.isEmpty()) {
+                && instanceField.children.isEmpty()) {
                 continue;
             }
 
@@ -52,7 +52,7 @@ public class EmailValidator implements OnCreateValidator, OnUpdateValidator {
                 }
 
                 if (!org.apache.commons.validator.routines.EmailValidator.getInstance().isValid(instanceField.getValue())) {
-                    errors.add(custom(instanceField, "commons-validators.email.invalid-format"));
+                    errors.add(custom(instanceField, "common-validators", "email.invalid-format"));
                 }
             }
 
