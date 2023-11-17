@@ -16,7 +16,7 @@ Ensure that the field has a valid email address:
 Fields:
     field:
         name: field1
-        description: $commonsValidator.email
+        description: $commons.validate(email)
 ```
 
 For more information you can consult [this link](https://learning.cultofbits.com/docs/cob-platform/admins/managing-information/available-customizations/common-validators/)
