@@ -3,7 +3,7 @@
     "invalid-format": "Email inválido"
   },
   "uniqueValue": {
-    "not-unique": "Este campo tem de ter um valor unico.",
-    "not-unique-with-query": "Este campo tem de ter um valor unico. <a href='%(queryUri)s' target='_blank'>[mostrar]</a>"
+    "not-unique": "Este campo debe tener un valor único.",
+    "not-unique-with-query": "Este campo debe tener un valor único. <a href='%(queryUri)s' target='_blank'>[ver]</a>"
   }
 }
