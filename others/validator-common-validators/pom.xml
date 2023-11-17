@@ -32,7 +32,7 @@
         <dependency>
             <groupId>com.cultofbits.recordm</groupId>
             <artifactId>custom-validators-api</artifactId>
-            <version>[1.1.0-SNAPSHOT, 2.0.0-SNAPSHOT)</version>
+            <version>[1.2.0-SNAPSHOT, 2.0.0-SNAPSHOT)</version>
         </dependency>
 
         <dependency>

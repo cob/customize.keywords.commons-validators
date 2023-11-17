@@ -1,0 +1,9 @@
+{
+  "email": {
+    "invalid-format": "Email inválido"
+  },
+  "uniqueValue": {
+    "not-unique": "Este campo tem de ter um valor unico.",
+    "not-unique-with-query": "Este campo tem de ter um valor unico. <a href='%(queryUri)s' target='_blank'>[mostrar]</a>"
+  }
+}
