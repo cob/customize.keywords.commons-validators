@@ -210,11 +210,33 @@ public class CommonValidatorServiceUniqueValueTest {
     }
 
     @Test
-    public void smokeTest() {
-        Matcher matcher = UniqueValidator.VALIDATION_EXPRESSION.matcher("uniqueValue(showLink=false)");
-        System.out.println(matcher.matches());
-        System.out.println(matcher.groupCount());
-        System.out.println(matcher.group(1));
+    public void default_to_add_Link_if_missing_showLink() {
+        FieldDefinition idCardField = FieldDefinitionBuilder.aFieldDefinition().id(1000).name("ID Number").description("$commons.validate(uniqueValue(showLink))").build();
+        FieldDefinition nameField = FieldDefinitionBuilder.aFieldDefinition().name("Name").build();
+
+        FieldDefinition parentField = FieldDefinitionBuilder.aFieldDefinition().name("ID Card")
+                .description("$[Yes,No]")
+                .childFields(idCardField, nameField)
+                .build();
+
+        Definition definition = DefinitionBuilder.aDefinition()
+                .fieldDefinitions(parentField, idCardField, nameField)
+                .build();
+
+        Instance instance = InstanceBuilder.anInstance(definition)
+                .id(3)
+                .fieldValue("ID Card", "Yes")
+                .fieldValue("ID Number", "111111111")
+                .build();
+
+        when(instanceRepository.getInstanceIdsWithFieldsMatching(eq(singletonList(idCardField.id)), eq("111111111"), eq(0), eq(2)))
+                .thenReturn(singletonList(2));
+
+        Collection<ValidationError> validationErrors =
+                validator.validateInstanceFields(instance.getFields(), Action.UPDATE);
+
+        LocalizedValidationError fieldError = (LocalizedValidationError) (new ArrayList<>(validationErrors).get(0));
+        assertEquals(fieldError.getL10nKey(), "uniqueValue.not-unique-with-query");
     }
 
 }
