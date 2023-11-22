@@ -27,18 +27,18 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
-public class CommonValidatorServiceUniqueValueTest {
+public class CommonsValidatorServiceUniqueValueTest {
 
     @Mock
     private InstanceRepository instanceRepository;
 
-    private CommonValidatorService validator;
+    private CommonsValidatorService validator;
 
     @BeforeMethod
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        validator = new CommonValidatorService();
+        validator = new CommonsValidatorService();
         validator.setInstanceRepository(instanceRepository);
     }
 

@@ -11,9 +11,9 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-public class CommonValidatorServiceEmailTest {
+public class CommonsValidatorServiceEmailTest {
 
-    private final CommonValidatorService validator = new CommonValidatorService();
+    private final CommonsValidatorService validator = new CommonsValidatorService();
 
     @Test
     public void pass_validation_if_email_is_valid() {

@@ -39,8 +39,8 @@ public class UniqueValidator implements CommonValidator {
             if (Action.ADD.equals(action)
                 || (matchingInstances.size() >= 2 || !matchingInstances.get(0).equals(field.instance.id))) {
                 return addLink
-                       ? Collections.singletonList(localized(field, "common-validators", "uniqueValue.not-unique-with-query", Collections.singletonMap("queryUri", getQueryUri(field))))
-                       : Collections.singletonList(localized(field, "common-validators", "uniqueValue.not-unique"));
+                       ? Collections.singletonList(localized(field, "commons-validators", "uniqueValue.not-unique-with-query", Collections.singletonMap("queryUri", getQueryUri(field))))
+                       : Collections.singletonList(localized(field, "commons-validators", "uniqueValue.not-unique"));
             }
         }
 

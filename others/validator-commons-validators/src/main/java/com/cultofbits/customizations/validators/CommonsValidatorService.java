@@ -24,7 +24,7 @@ import static com.cultofbits.customizations.validators.impl.Action.UPDATE;
  * Email validator that uses the same email validator when registering users in UserM.
  * This is important when using scripts in IntegrationM that create users in UserM
  */
-public class CommonValidatorService implements OnCreateValidator, OnUpdateValidator {
+public class CommonsValidatorService implements OnCreateValidator, OnUpdateValidator {
 
     public static final String KEYWORD = "$commons.validate";
 

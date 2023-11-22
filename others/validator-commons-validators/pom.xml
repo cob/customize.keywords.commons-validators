@@ -21,11 +21,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.cultofbits.mdados</groupId>
-    <artifactId>cob-customize-validator-common-validators</artifactId>
+    <artifactId>cob-customize-validator-commons-validators</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
-    <name>cob-customize-common-validators Blueprint Bundle</name>
+    <name>cob-customize-commons-validators Blueprint Bundle</name>
     <description>Cob custom validator OSGi blueprint bundle project.</description>
 
     <dependencies>
@@ -58,7 +58,7 @@
     </dependencies>
 
     <build>
-        <finalName>cob-customize-validator-common-validators</finalName>
+        <finalName>cob-customize-validator-commons-validators</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>

@@ -16,7 +16,7 @@ public class EmailValidator implements CommonValidator {
 
     public List<ValidationError> validate(InstanceField field, Action action, String validationConfiguration) {
         if (!org.apache.commons.validator.routines.EmailValidator.getInstance().isValid(field.getValue())) {
-            return Collections.singletonList(localized(field, "common-validators", "email.invalid-format"));
+            return Collections.singletonList(localized(field, "commons-validators", "email.invalid-format"));
         }
 
         return Collections.emptyList();

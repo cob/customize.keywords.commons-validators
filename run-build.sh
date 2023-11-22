@@ -16,7 +16,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-customization="common-validators"
+customization="commons-validators"
 all="false"
 type=""
 

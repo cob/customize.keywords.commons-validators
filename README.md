@@ -1,4 +1,4 @@
-# customize.keyword.common-validators
+# customize.keyword.commons-validators
 
 ## Install
 
@@ -19,14 +19,14 @@ Fields:
         description: $commons.validate(email)
 ```
 
-For more information you can consult [this link](https://learning.cultofbits.com/docs/cob-platform/admins/managing-information/available-customizations/common-validators/)
+For more information you can consult [this link](https://learning.cultofbits.com/docs/cob-platform/admins/managing-information/available-customizations/commons-validators/)
 
 ## Build
 
 ```bash
 cd others/recordm-validators
 mvn clean package
-cp target/cob-customize-common-validators.jar ../../recordm/bundles/
+cp target/cob-customize-commons-validators.jar ../../recordm/bundles/
 ```
 
 ## Release
