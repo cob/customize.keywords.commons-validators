@@ -5,5 +5,8 @@
   "uniqueValue": {
     "not-unique": "This field must have a unique value.",
     "not-unique-with-query": "This field must have a unique value. <a href='%(queryUri)s' target='_blank'>[show]</a>"
+  },
+  "pattern": {
+    "invalid-format": "Invalid format"
   }
 }
