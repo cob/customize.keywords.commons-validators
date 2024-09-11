@@ -3,6 +3,7 @@ package com.cultofbits.customizations.validators;
 import com.cultofbits.customizations.validators.impl.Action;
 import com.cultofbits.customizations.validators.impl.CommonValidator;
 import com.cultofbits.customizations.validators.impl.EmailValidator;
+import com.cultofbits.customizations.validators.impl.RegexValidator;
 import com.cultofbits.customizations.validators.impl.UniqueValidator;
 import com.cultofbits.recordm.core.model.FieldDefinition;
 import com.cultofbits.recordm.core.model.Instance;
@@ -40,6 +41,7 @@ public class CommonsValidatorService implements OnCreateValidator, OnUpdateValid
         if (validators == null) {
             validators = new ArrayList<>();
             validators.add(new EmailValidator());
+            validators.add(new RegexValidator());
             validators.add(new UniqueValidator(instanceRepository));
         }
 

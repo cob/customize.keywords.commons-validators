@@ -4,7 +4,6 @@ import com.cultofbits.customizations.utils.DefinitionBuilder;
 import com.cultofbits.customizations.utils.FieldDefinitionBuilder;
 import com.cultofbits.customizations.utils.InstanceBuilder;
 import com.cultofbits.customizations.validators.impl.Action;
-import com.cultofbits.customizations.validators.impl.UniqueValidator;
 import com.cultofbits.recordm.core.model.Definition;
 import com.cultofbits.recordm.core.model.FieldDefinition;
 import com.cultofbits.recordm.core.model.Instance;
@@ -19,7 +18,6 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.regex.Matcher;
 
 import static java.util.Collections.singletonList;
 import static org.mockito.Matchers.anyList;
@@ -27,7 +25,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
-public class CommonsValidatorServiceUniqueValueTest {
+public class UniqueValidatorTest {
 
     @Mock
     private InstanceRepository instanceRepository;
