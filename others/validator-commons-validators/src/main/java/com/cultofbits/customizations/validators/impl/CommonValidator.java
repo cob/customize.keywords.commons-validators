@@ -9,6 +9,8 @@ public interface CommonValidator {
 
     boolean supports(String name);
 
-    List<ValidationError> validate(InstanceField instanceField, Action action, String validationConfiguration);
+    List<ValidationError> validateOnCreate(InstanceField instanceField, String validationConfiguration);
+
+    List<ValidationError> validateOnUpdate(InstanceField updatedField, InstanceField persistedField, String validationConfiguration);
 
 }

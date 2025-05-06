@@ -1,9 +1,9 @@
-package com.cultofbits.customizations.validators;
+package com.cultofbits.customizations.validators.impl;
 
 import com.cultofbits.customizations.utils.DefinitionBuilder;
 import com.cultofbits.customizations.utils.FieldDefinitionBuilder;
 import com.cultofbits.customizations.utils.InstanceBuilder;
-import com.cultofbits.customizations.validators.impl.Action;
+import com.cultofbits.customizations.validators.CommonsValidatorService;
 import com.cultofbits.recordm.core.model.Definition;
 import com.cultofbits.recordm.core.model.Instance;
 import com.cultofbits.recordm.persistence.InstanceRepository;
@@ -45,7 +45,7 @@ public class RegexVaidatorTest {
             .fieldValue("value", "a")
             .build();
 
-        assertTrue(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertTrue(validator.validateInstanceFields(instance.getFields(), instance, Action.ADD).isEmpty());
     }
 
     /**
@@ -63,7 +63,7 @@ public class RegexVaidatorTest {
                 .fieldValue("IP", "invalid ip")
                 .build();
 
-        assertFalse(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertFalse(validator.validateInstanceFields(instance.getFields(), instance, Action.ADD).isEmpty());
     }
 
     /**
@@ -81,7 +81,7 @@ public class RegexVaidatorTest {
                 .fieldValue("IP", "invalid ip")
                 .build();
 
-        assertFalse(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertFalse(validator.validateInstanceFields(instance.getFields(), instance, Action.ADD).isEmpty());
     }
 
 }

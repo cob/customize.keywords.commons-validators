@@ -20,8 +20,16 @@ public class RegexValidator implements CommonValidator {
     }
 
     @Override
-    public List<ValidationError> validate(InstanceField field, Action action, String valExpr) {
+    public List<ValidationError> validateOnCreate(InstanceField field, String valExpr) {
+        return getValidationErrors(field, valExpr);
+    }
 
+    @Override
+    public List<ValidationError> validateOnUpdate(InstanceField field, InstanceField persistedField, String valExpr) {
+        return getValidationErrors(field, valExpr);
+    }
+
+    private static List<ValidationError> getValidationErrors(InstanceField field, String valExpr) {
         Matcher matcher = VALIDATION_EXPRESSION.matcher(valExpr);
         if (matcher.matches() && field.getValue() != null) {
             String regex = matcher.group(1);

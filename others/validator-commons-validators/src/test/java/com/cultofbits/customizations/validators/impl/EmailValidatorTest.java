@@ -1,9 +1,9 @@
-package com.cultofbits.customizations.validators;
+package com.cultofbits.customizations.validators.impl;
 
 import com.cultofbits.customizations.utils.DefinitionBuilder;
 import com.cultofbits.customizations.utils.FieldDefinitionBuilder;
 import com.cultofbits.customizations.utils.InstanceBuilder;
-import com.cultofbits.customizations.validators.impl.Action;
+import com.cultofbits.customizations.validators.CommonsValidatorService;
 import com.cultofbits.recordm.core.model.Definition;
 import com.cultofbits.recordm.core.model.Instance;
 import org.testng.annotations.Test;
@@ -26,7 +26,7 @@ public class EmailValidatorTest {
             .fieldValue("Email", "test@cultofbits.com")
             .build();
 
-        assertTrue(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertTrue(validator.validateInstanceFields(instance.getFields(), instance, Action.ADD).isEmpty());
     }
 
     @Test
@@ -39,7 +39,7 @@ public class EmailValidatorTest {
         Instance instance = InstanceBuilder.anInstance(definition)
             .build();
 
-        assertTrue(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertTrue(validator.validateInstanceFields(instance.getFields(), instance, Action.ADD).isEmpty());
     }
 
     @Test
@@ -53,6 +53,6 @@ public class EmailValidatorTest {
             .fieldValue("Email", "3.x")
             .build();
 
-        assertFalse(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertFalse(validator.validateInstanceFields(instance.getFields(), instance, Action.ADD).isEmpty());
     }
 }

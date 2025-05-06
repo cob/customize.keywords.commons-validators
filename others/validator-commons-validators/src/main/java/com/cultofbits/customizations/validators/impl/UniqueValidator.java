@@ -26,7 +26,15 @@ public class UniqueValidator implements CommonValidator {
         return name != null && name.startsWith("uniqueValue");
     }
 
-    public List<ValidationError> validate(InstanceField field, Action action, String valExpr) {
+    public List<ValidationError> validateOnCreate(InstanceField field, String valExpr) {
+        return getValidationErrors(field, true, valExpr);
+    }
+
+    public List<ValidationError> validateOnUpdate(InstanceField field, InstanceField persistedField, String valExpr) {
+        return getValidationErrors(field, false, valExpr);
+    }
+
+    private List<ValidationError> getValidationErrors(InstanceField field, boolean newInstance, String valExpr) {
         Matcher matcher = VALIDATION_EXPRESSION.matcher(valExpr);
         boolean addLink = matcher.matches() ? matcher.group(1).equals("true") : true;
 
@@ -36,8 +44,7 @@ public class UniqueValidator implements CommonValidator {
             0, 2);
 
         if (!matchingInstances.isEmpty()) {
-            if (Action.ADD.equals(action)
-                || (matchingInstances.size() >= 2 || !matchingInstances.get(0).equals(field.instance.id))) {
+            if (newInstance || (matchingInstances.size() >= 2 || !matchingInstances.get(0).equals(field.instance.id))) {
                 return addLink
                        ? Collections.singletonList(localized(field, "commons-validators", "uniqueValue.not-unique-with-query", Collections.singletonMap("queryUri", getQueryUri(field))))
                        : Collections.singletonList(localized(field, "commons-validators", "uniqueValue.not-unique"));

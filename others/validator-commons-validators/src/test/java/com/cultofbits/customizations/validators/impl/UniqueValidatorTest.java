@@ -1,9 +1,9 @@
-package com.cultofbits.customizations.validators;
+package com.cultofbits.customizations.validators.impl;
 
 import com.cultofbits.customizations.utils.DefinitionBuilder;
 import com.cultofbits.customizations.utils.FieldDefinitionBuilder;
 import com.cultofbits.customizations.utils.InstanceBuilder;
-import com.cultofbits.customizations.validators.impl.Action;
+import com.cultofbits.customizations.validators.CommonsValidatorService;
 import com.cultofbits.recordm.core.model.Definition;
 import com.cultofbits.recordm.core.model.FieldDefinition;
 import com.cultofbits.recordm.core.model.Instance;
@@ -55,7 +55,7 @@ public class UniqueValidatorTest {
         when(instanceRepository.getInstanceIdsWithFieldsMatching(anyList(), eq("Robot"), eq(0), eq(2)))
             .thenReturn(Collections.emptyList());
 
-        assertTrue(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertTrue(validator.validateInstanceFields(instance.getFields(), null, Action.ADD).isEmpty());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class UniqueValidatorTest {
         when(instanceRepository.getInstanceIdsWithFieldsMatching(anyList(), eq("Robot"), eq(0), eq(2)))
             .thenReturn(singletonList(1));
 
-        assertFalse(validator.validateInstanceFields(instance.getFields(), Action.ADD).isEmpty());
+        assertFalse(validator.validateInstanceFields(instance.getFields(), null, Action.ADD).isEmpty());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class UniqueValidatorTest {
         when(instanceRepository.getInstanceIdsWithFieldsMatching(anyList(), eq("Robot"), eq(0), eq(2)))
             .thenReturn(singletonList(2));
 
-        assertTrue(validator.validateInstanceFields(instance.getFields(), Action.UPDATE).isEmpty());
+        assertTrue(validator.validateInstanceFields(instance.getFields(), instance, Action.UPDATE).isEmpty());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class UniqueValidatorTest {
         when(instanceRepository.getInstanceIdsWithFieldsMatching(anyList(), eq("Robot"), eq(0), eq(2)))
             .thenReturn(singletonList(2));
 
-        assertFalse(validator.validateInstanceFields(instance.getFields(), Action.UPDATE).isEmpty());
+        assertFalse(validator.validateInstanceFields(instance.getFields(), instance, Action.UPDATE).isEmpty());
     }
 
     @Test
@@ -139,13 +139,14 @@ public class UniqueValidatorTest {
         when(instanceRepository.getInstanceIdsWithFieldsMatching(eq(singletonList(idCardField.id)), eq("111111111"), eq(0), eq(2)))
             .thenReturn(singletonList(2));
 
-        assertFalse(validator.validateInstanceFields(instance.getFields(), Action.UPDATE).isEmpty());
+        assertFalse(validator.validateInstanceFields(instance.getFields(), instance, Action.UPDATE).isEmpty());
     }
 
     @Test
     public void error_message_must_include_search_uri() {
 
-        FieldDefinition idCardField = FieldDefinitionBuilder.aFieldDefinition().id(1000).name("ID Number").description("$commons.validate(uniqueValue(showLink=true))").build();
+        FieldDefinition idCardField =
+            FieldDefinitionBuilder.aFieldDefinition().id(1000).name("ID Number").description("$commons.validate(uniqueValue(showLink=true))").build();
         FieldDefinition nameField = FieldDefinitionBuilder.aFieldDefinition().name("Name").build();
 
         FieldDefinition parentField = FieldDefinitionBuilder.aFieldDefinition().name("ID Card")
@@ -167,7 +168,7 @@ public class UniqueValidatorTest {
             .thenReturn(singletonList(2));
 
         Collection<ValidationError> validationErrors =
-            validator.validateInstanceFields(instance.getFields(), Action.UPDATE);
+            validator.validateInstanceFields(instance.getFields(), instance, Action.UPDATE);
 
         LocalizedValidationError fieldError = (LocalizedValidationError) (new ArrayList<>(validationErrors).get(0));
         assertEquals(fieldError.getL10nKey(), "uniqueValue.not-unique-with-query");
@@ -200,7 +201,7 @@ public class UniqueValidatorTest {
             .thenReturn(singletonList(2));
 
         Collection<ValidationError> validationErrors =
-            validator.validateInstanceFields(instance.getFields(), Action.UPDATE);
+            validator.validateInstanceFields(instance.getFields(), instance, Action.UPDATE);
 
         LocalizedValidationError fieldError = (LocalizedValidationError) (new ArrayList<>(validationErrors).get(0));
         assertEquals(fieldError.getL10nKey(), "uniqueValue.not-unique");
@@ -209,29 +210,30 @@ public class UniqueValidatorTest {
 
     @Test
     public void default_to_add_Link_if_missing_showLink() {
-        FieldDefinition idCardField = FieldDefinitionBuilder.aFieldDefinition().id(1000).name("ID Number").description("$commons.validate(uniqueValue(showLink))").build();
+        FieldDefinition idCardField =
+            FieldDefinitionBuilder.aFieldDefinition().id(1000).name("ID Number").description("$commons.validate(uniqueValue(showLink))").build();
         FieldDefinition nameField = FieldDefinitionBuilder.aFieldDefinition().name("Name").build();
 
         FieldDefinition parentField = FieldDefinitionBuilder.aFieldDefinition().name("ID Card")
-                .description("$[Yes,No]")
-                .childFields(idCardField, nameField)
-                .build();
+            .description("$[Yes,No]")
+            .childFields(idCardField, nameField)
+            .build();
 
         Definition definition = DefinitionBuilder.aDefinition()
-                .fieldDefinitions(parentField, idCardField, nameField)
-                .build();
+            .fieldDefinitions(parentField, idCardField, nameField)
+            .build();
 
         Instance instance = InstanceBuilder.anInstance(definition)
-                .id(3)
-                .fieldValue("ID Card", "Yes")
-                .fieldValue("ID Number", "111111111")
-                .build();
+            .id(3)
+            .fieldValue("ID Card", "Yes")
+            .fieldValue("ID Number", "111111111")
+            .build();
 
         when(instanceRepository.getInstanceIdsWithFieldsMatching(eq(singletonList(idCardField.id)), eq("111111111"), eq(0), eq(2)))
-                .thenReturn(singletonList(2));
+            .thenReturn(singletonList(2));
 
         Collection<ValidationError> validationErrors =
-                validator.validateInstanceFields(instance.getFields(), Action.UPDATE);
+            validator.validateInstanceFields(instance.getFields(), instance, Action.UPDATE);
 
         LocalizedValidationError fieldError = (LocalizedValidationError) (new ArrayList<>(validationErrors).get(0));
         assertEquals(fieldError.getL10nKey(), "uniqueValue.not-unique-with-query");

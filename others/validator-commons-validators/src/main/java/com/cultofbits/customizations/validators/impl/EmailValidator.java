@@ -6,7 +6,7 @@ import com.cultofbits.recordm.customvalidators.api.ValidationError;
 import java.util.Collections;
 import java.util.List;
 
-import static com.cultofbits.recordm.customvalidators.api.LocalizedValidationError.*;
+import static com.cultofbits.recordm.customvalidators.api.LocalizedValidationError.localized;
 
 public class EmailValidator implements CommonValidator {
 
@@ -14,7 +14,16 @@ public class EmailValidator implements CommonValidator {
         return "email".equals(name.trim());
     }
 
-    public List<ValidationError> validate(InstanceField field, Action action, String validationConfiguration) {
+    public List<ValidationError> validateOnCreate(InstanceField field, String validationConfiguration) {
+        return getValidationErrors(field);
+    }
+
+    @Override
+    public List<ValidationError> validateOnUpdate(InstanceField field, InstanceField persistedField, String validationConfiguration) {
+        return getValidationErrors(field);
+    }
+
+    private static List<ValidationError> getValidationErrors(InstanceField field) {
         if (!org.apache.commons.validator.routines.EmailValidator.getInstance().isValid(field.getValue())) {
             return Collections.singletonList(localized(field, "commons-validators", "email.invalid-format"));
         }

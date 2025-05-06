@@ -1,10 +1,6 @@
 package com.cultofbits.customizations.validators;
 
-import com.cultofbits.customizations.validators.impl.Action;
-import com.cultofbits.customizations.validators.impl.CommonValidator;
-import com.cultofbits.customizations.validators.impl.EmailValidator;
-import com.cultofbits.customizations.validators.impl.RegexValidator;
-import com.cultofbits.customizations.validators.impl.UniqueValidator;
+import com.cultofbits.customizations.validators.impl.*;
 import com.cultofbits.recordm.core.model.FieldDefinition;
 import com.cultofbits.recordm.core.model.Instance;
 import com.cultofbits.recordm.core.model.InstanceField;
@@ -37,11 +33,12 @@ public class CommonsValidatorService implements OnCreateValidator, OnUpdateValid
         this.instanceRepository = instanceRepository;
     }
 
-    private List<CommonValidator> getValidators() {
+    private List<CommonValidator> getCommonValidators() {
         if (validators == null) {
             validators = new ArrayList<>();
             validators.add(new EmailValidator());
             validators.add(new RegexValidator());
+            validators.add(new NoUpdateValidator());
             validators.add(new UniqueValidator(instanceRepository));
         }
 
@@ -50,15 +47,17 @@ public class CommonsValidatorService implements OnCreateValidator, OnUpdateValid
 
     @Override
     public Collection<ValidationError> onCreate(Instance instance) {
-        return validateInstanceFields(instance.getRootFields(), ADD);
+        return validateInstanceFields(instance.getRootFields(), null, ADD);
     }
 
     @Override
     public Collection<ValidationError> onUpdate(Instance persistedInstance, Instance updatedInstance) {
-        return validateInstanceFields(updatedInstance.getRootFields(), UPDATE);
+        return validateInstanceFields(updatedInstance.getRootFields(), persistedInstance, UPDATE);
     }
 
-    public Collection<ValidationError> validateInstanceFields(List<InstanceField> instanceFields, Action action) {
+    public Collection<ValidationError> validateInstanceFields(List<InstanceField> instanceFields,
+                                                              Instance persistedInstance,
+                                                              Action action) {
         List<ValidationError> errors = new ArrayList<>();
 
         for (InstanceField instanceField : instanceFields) {
@@ -74,26 +73,34 @@ public class CommonsValidatorService implements OnCreateValidator, OnUpdateValid
                     return Collections.emptyList();
                 }
 
-                ArrayList<Object> requestedValidators =
-                    new ArrayList<>(fieldDefinition.getConfiguration().args(KEYWORD).toMap().values());
+                List<Object> requestedValidators = new ArrayList<>(fieldDefinition.getConfiguration().args(KEYWORD).toMap().values());
                 requestedValidators = (ArrayList<Object>) requestedValidators.get(0);
 
-                requestedValidators.forEach(fieldVal -> getValidators()
-                    .forEach(val -> {
-                        String valType = String.valueOf(fieldVal).trim();
-                        if (val.supports(valType)) {
+                requestedValidators.forEach(fieldVal -> getCommonValidators().forEach(val -> {
+                    String valType = String.valueOf(fieldVal).trim();
 
-                            List<ValidationError> validationErrors = val.validate(instanceField, action, valType);
+                    if (val.supports(valType)) {
+                        List<ValidationError> validationErrors = new ArrayList<>();
 
-                            if (!validationErrors.isEmpty()) {
-                                errors.addAll(validationErrors);
-                            }
+                        if (action == ADD) {
+                            validationErrors.addAll(val.validateOnCreate(instanceField, valType));
+
+                        } else {
+                            validationErrors.addAll(val.validateOnUpdate(instanceField,
+                                                                         instanceField.id != null ? persistedInstance.getField(instanceField.id) : null,
+                                                                         valType));
                         }
-                    }));
+
+
+                        if (!validationErrors.isEmpty()) {
+                            errors.addAll(validationErrors);
+                        }
+                    }
+                }));
             }
 
             if (!instanceField.children.isEmpty()) {
-                errors.addAll(validateInstanceFields(instanceField.children, action));
+                errors.addAll(validateInstanceFields(instanceField.children, persistedInstance, action));
             }
         }
 
