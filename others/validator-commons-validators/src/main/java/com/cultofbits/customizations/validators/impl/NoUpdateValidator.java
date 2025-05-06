@@ -1,12 +1,18 @@
 package com.cultofbits.customizations.validators.impl;
 
+import com.cultofbits.genesis.security.PermissionContext;
 import com.cultofbits.recordm.core.model.InstanceField;
 import com.cultofbits.recordm.customvalidators.api.ValidationError;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.cultofbits.recordm.customvalidators.api.ErrorType.NOT_AUTHORIZED_TO_EDIT_FIELD;
+import static com.cultofbits.recordm.customvalidators.api.ValidationError.standard;
 
 public class NoUpdateValidator implements CommonValidator {
 
@@ -25,8 +31,14 @@ public class NoUpdateValidator implements CommonValidator {
     @Override
     public List<ValidationError> validateOnUpdate(InstanceField updatedField, InstanceField persistedField, String valExpr) {
         Matcher matcher = VALIDATION_EXPRESSION.matcher(valExpr);
-        String[] allowedGroups = (matcher.matches() ? matcher.group(1) : "").split(",");
+        List<String> allowedGroups = Arrays.asList((matcher.matches() ? matcher.group(1) : "").split(","));
+
+        if (!Objects.equals(updatedField.getValue(), persistedField.getValue())
+            && !PermissionContext.getUserData().getGroups().stream().anyMatch(allowedGroups::contains)) {
+            return Collections.singletonList(standard(updatedField, NOT_AUTHORIZED_TO_EDIT_FIELD));
+        }
 
         return Collections.emptyList();
     }
+
 }
