@@ -8,5 +8,8 @@
   },
   "pattern": {
     "invalid-format": "Formato inválido"
+  },
+  "noUpdate": {
+    "unauthorized-change": "Não é permitido alterar o valor"
   }
 }

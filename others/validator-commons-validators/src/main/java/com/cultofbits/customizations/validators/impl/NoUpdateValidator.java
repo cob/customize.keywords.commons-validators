@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.cultofbits.recordm.customvalidators.api.ErrorType.NOT_AUTHORIZED_TO_EDIT_FIELD;
+import static com.cultofbits.recordm.customvalidators.api.LocalizedValidationError.localized;
 import static com.cultofbits.recordm.customvalidators.api.ValidationError.standard;
 
 public class NoUpdateValidator implements CommonValidator {
@@ -35,7 +36,7 @@ public class NoUpdateValidator implements CommonValidator {
 
         if (!Objects.equals(updatedField.getValue(), persistedField.getValue())
             && !PermissionContext.getUserData().getGroups().stream().anyMatch(allowedGroups::contains)) {
-            return Collections.singletonList(standard(updatedField, NOT_AUTHORIZED_TO_EDIT_FIELD));
+            return Collections.singletonList(localized(updatedField, "commons-validators", "noUpdate.unauthorized-change"));
         }
 
         return Collections.emptyList();
