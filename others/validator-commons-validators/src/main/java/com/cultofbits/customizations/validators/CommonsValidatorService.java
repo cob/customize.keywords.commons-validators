@@ -62,7 +62,7 @@ public class CommonsValidatorService implements OnCreateValidator, OnUpdateValid
 
         for (InstanceField instanceField : instanceFields) {
             if ((!instanceField.isVisible() || instanceField.getValue() == null)
-                && instanceField.children.isEmpty()) {
+                    && instanceField.children.isEmpty()) {
                 continue;
             }
 
@@ -87,10 +87,9 @@ public class CommonsValidatorService implements OnCreateValidator, OnUpdateValid
 
                         } else {
                             validationErrors.addAll(val.validateOnUpdate(instanceField,
-                                                                         instanceField.id != null ? persistedInstance.getFieldIfExists(instanceField.id) : null,
-                                                                         valType));
+                                    persistedInstance != null && instanceField.id != null ? persistedInstance.getFieldIfExists(instanceField.id) : null,
+                                    valType));
                         }
-
 
                         if (!validationErrors.isEmpty()) {
                             errors.addAll(validationErrors);
