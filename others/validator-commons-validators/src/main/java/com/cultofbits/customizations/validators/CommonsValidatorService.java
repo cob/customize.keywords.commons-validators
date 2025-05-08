@@ -87,7 +87,7 @@ public class CommonsValidatorService implements OnCreateValidator, OnUpdateValid
 
                         } else {
                             validationErrors.addAll(val.validateOnUpdate(instanceField,
-                                                                         instanceField.id != null ? persistedInstance.getField(instanceField.id) : null,
+                                                                         instanceField.id != null ? persistedInstance.getFieldIfExists(instanceField.id) : null,
                                                                          valType));
                         }
 
